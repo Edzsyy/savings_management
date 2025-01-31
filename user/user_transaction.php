@@ -32,18 +32,18 @@ include('../user/assets/inc/navbar.php');
                        <button class="btn btn-primary mt-4" onclick="filterTransactions()">Filter</button>
                     </div>
                 </div>
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th scope="col">Type</th>
-                            <th scope="col">Amount</th>
-                            <th scope="col">Description</th>
-                            <th scope="col">Date</th>
-                        </tr>
-                    </thead>
-                    <tbody id="transactionTableBody">
-                        <!-- Transaction entries will be dynamically inserted here (using JavaScript) -->
-                        <tr>
+               <div class="table-responsive">
+                   <table id="transactionTable" class="table table-striped">  <!-- Added id transactionTable-->
+                        <thead>
+                            <tr>
+                                <th scope="col">Type</th>
+                                <th scope="col">Amount</th>
+                                <th scope="col">Description</th>
+                                <th scope="col">Date</th>
+                            </tr>
+                        </thead>
+                         <tbody>
+                         <tr>
                             <td>Deposit</td>
                             <td>₱500.00</td>
                             <td>Initial deposit</td>
@@ -102,28 +102,29 @@ include('../user/assets/inc/navbar.php');
                              <td>₱40.00</td>
                              <td>Dinner with friends</td>
                             <td>2024-07-01</td>
-                         </tr>
-
-                    </tbody>
-                </table>
+                         </tr>  
+                         <!-- Transaction entries will be dynamically inserted here (using JavaScript) -->
+                         </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
 
+    <!-- DataTables JavaScript (at the end of the body) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+ <script>
+    $(document).ready( function () {
+    $('#transactionTable').DataTable();
+} );
+</script>
  <script>
         function filterTransactions() {
-            const startDate = document.getElementById('startDate').value;
+           const startDate = document.getElementById('startDate').value;
             const endDate = document.getElementById('endDate').value;
-             const transactionType = document.getElementById('transactionType').value;
-
-
-            const tableBody = document.getElementById('transactionTableBody');
-           
-            
-            // Clear previous results
-            tableBody.innerHTML = "";
-
-            // Fetch data from the server (would require a backend call)
+            const transactionType = document.getElementById('transactionType').value;
+          
             const transactions = [
                    { type: 'Deposit', amount: '₱500.00', description: 'Initial deposit', date: '2024-07-26' },
                 { type: 'Withdrawal', amount: '₱200.00', description: 'Monthly rent', date: '2024-07-25' },
@@ -137,25 +138,24 @@ include('../user/assets/inc/navbar.php');
                 { type: 'Withdrawal', amount: '₱40.00', description: 'Dinner with friends', date: '2024-07-01' },
 
             ];
+            const table = $('#transactionTable').DataTable();
 
-
-            transactions.forEach(transaction => {
+             table.clear().draw(); // clears the datatable
+               transactions.forEach(transaction => {
                  // Check if the transaction date is within the selected range
                  if ((!startDate || !endDate || (transaction.date >= startDate && transaction.date <= endDate)) &&
                      (transactionType === 'all' || transaction.type === transactionType)) {
-
-                const row = document.createElement('tr');
-                 row.innerHTML = `
-                  <td>${transaction.type}</td>
-                    <td>${transaction.amount}</td>
-                    <td>${transaction.description}</td>
-                    <td>${transaction.date}</td>
-                  `;
-                  tableBody.appendChild(row);
-              }
-          });
+                         table.row.add([
+                             transaction.type,
+                            transaction.amount,
+                            transaction.description,
+                            transaction.date,
+                        ]).draw(false);
+                     }
+               });
         }
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

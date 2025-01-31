@@ -588,6 +588,9 @@ main {
 .dark-theme-variables  .p-4  h5.mb-3 { /* added new specificity */
  color: var(--color-card-text);
 }
+.dark-theme-variables #sidebar #sidebarUsername {
+    color: var(--color-white) !important;
+    }
 
 @media screen and (max-width: 768px){
     #topbar{
@@ -600,3 +603,10 @@ main {
         display: none;
     }
 }
+/* added this to make the sidebar hide */
+#userSidebarContainer.hide {
+    max-width: 60px;
+   }
+   #userSidebarContainer.hide {
+    max-width: 60px;
+   }

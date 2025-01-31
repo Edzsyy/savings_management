@@ -1,8 +1,8 @@
 <?php
-$servername = "localhost";  // Change as needed (use IP or domain name for remote server)
+$servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "local_government_unit";
+$dbname = "savingsdb";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
